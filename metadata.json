@@ -1,0 +1,6 @@
+{
+  "name": "ClientVault",
+  "description": "Secure client file management and sharing portal for freelancers, agencies, and creative professionals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

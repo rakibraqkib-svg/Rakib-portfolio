@@ -1,0 +1,145 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Registered freelancer or agency account",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "avatar": { "type": "string", "maxLength": 1000 },
+        "agencyName": { "type": "string", "maxLength": 150 },
+        "plan": { "type": "string", "enum": ["Starter", "Pro", "Agency"] },
+        "storageUsed": { "type": "number" },
+        "storageLimit": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "email", "name"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Client workspace created by freelancer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "clientName": { "type": "string", "maxLength": 150 },
+        "clientEmail": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "color": { "type": "string", "maxLength": 30 },
+        "status": { "type": "string", "enum": ["active", "in-review", "completed"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "fileCount": { "type": "number" },
+        "totalSize": { "type": "number" }
+      },
+      "required": ["id", "userId", "name", "clientName"]
+    },
+    "FileItem": {
+      "title": "FileItem",
+      "description": "Delivered or organized client file metadata and cloud storage reference",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "projectId": { "type": "string" },
+        "projectName": { "type": "string", "maxLength": 200 },
+        "name": { "type": "string", "maxLength": 255 },
+        "type": { "type": "string", "maxLength": 30 },
+        "category": { "type": "string", "enum": ["image", "video", "document", "design", "archive", "audio", "other"] },
+        "size": { "type": "number" },
+        "url": { "type": "string" },
+        "storagePath": { "type": "string", "maxLength": 500 },
+        "previewUrl": { "type": "string" },
+        "uploadDate": { "type": "string" },
+        "isFavorite": { "type": "boolean" },
+        "isTrash": { "type": "boolean" },
+        "sharedCount": { "type": "number" },
+        "clientViews": { "type": "number" },
+        "downloadCount": { "type": "number" },
+        "description": { "type": "string", "maxLength": 1000 }
+      },
+      "required": ["id", "userId", "name", "type", "category", "size"]
+    },
+    "ShareLink": {
+      "title": "ShareLink",
+      "description": "Cryptographic client access token for secure deliveries",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fileId": { "type": "string" },
+        "fileName": { "type": "string", "maxLength": 255 },
+        "ownerId": { "type": "string" },
+        "ownerName": { "type": "string", "maxLength": 100 },
+        "token": { "type": "string", "maxLength": 100 },
+        "hasPassword": { "type": "boolean" },
+        "password": { "type": "string", "maxLength": 100 },
+        "expiresAt": { "type": "string" },
+        "allowDownload": { "type": "boolean" },
+        "viewsCount": { "type": "number" },
+        "downloadsCount": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "isRevoked": { "type": "boolean" }
+      },
+      "required": ["id", "fileId", "token", "ownerId"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "User notification alerts",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "read": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "title", "message"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Project and client activity history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "projectId": { "type": "string" },
+        "projectName": { "type": "string" },
+        "action": { "type": "string" },
+        "fileName": { "type": "string" },
+        "clientName": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "action"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile data"
+    },
+    "/users/{userId}/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Client project workspaces owned by the user"
+    },
+    "/users/{userId}/files/{fileId}": {
+      "schema": "FileItem",
+      "description": "Delivered and uploaded files"
+    },
+    "/users/{userId}/notifications/{notificationId}": {
+      "schema": "NotificationItem",
+      "description": "User activity alerts"
+    },
+    "/users/{userId}/activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Activity history"
+    },
+    "/shareLinks/{token}": {
+      "schema": "ShareLink",
+      "description": "Token-addressed shared links for client access"
+    }
+  }
+}
